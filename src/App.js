@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import firebaseConfig from "./firebaseConfig";
+import * as firebaseui from "firebaseui";
+import firebase from "firebase";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    const fbase = firebase.initializeApp(firebaseConfig);
+    const uiConfig = {
+      signInSuccessUrl: "https://quiet-forest-25381.herokuapp.com/", //This URL is used to return to that page when we got success response for phone authentication.
+      signInOptions: [firebase.auth.PhoneAuthProvider.PROVIDER_ID],
+      tosUrl: "https://quiet-forest-25381.herokuapp.com/",
+    };
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    ui.start("#firebaseui-auth-container", uiConfig);
+  }
+  render() {
+    return (
+      <>
+        <h1>REACT PHONE AUTHENTICATION</h1>
+        <div id="firebaseui-auth-container"></div>
+      </>
+    );
+  }
 }
 
 export default App;
